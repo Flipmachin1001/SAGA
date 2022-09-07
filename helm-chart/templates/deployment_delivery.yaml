@@ -1,0 +1,54 @@
+#Доставка
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery-deployment
+  labels:
+    app: delivery
+spec:
+  replicas: {{ .Values.delivery.replicaCount }}   
+  selector:
+    matchLabels:
+      app: delivery
+  template:
+    metadata:
+      labels:
+        app: delivery
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: delivery
+          image: "{{ .Values.delivery.image.repository }}:{{ .Values.delivery.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /hc
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /hc
+              port: 8000
+          env:
+          - name: DELIVERY_URI
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: DELIVERY_URI
+          - name: RabbitMQ_URI
+            valueFrom:
+               secretKeyRef:
+                name: rabbit-secret
+                key: RabbitMQ_URI
+          volumeMounts:
+          - name: configmap-volume
+            mountPath: "/app/appsettings.json"
+            subPath: appsettings.json
+            readOnly: true
+      volumes:
+      - name: configmap-volume
+        configMap:
+          name: api-configmap

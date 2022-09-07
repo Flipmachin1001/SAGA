@@ -1,0 +1,54 @@
+#Биллинг
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: billing-deployment
+  labels:
+    app: billing
+spec:
+  replicas: {{ .Values.billing.replicaCount }}   
+  selector:
+    matchLabels:
+      app: billing
+  template:
+    metadata:
+      labels:
+        app: billing
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: billing
+          image: "{{ .Values.billing.image.repository }}:{{ .Values.billing.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /hc
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /hc
+              port: 8000
+          env:
+          - name: BILLING_URI
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: BILLING_URI
+          - name: RabbitMQ_URI
+            valueFrom:
+               secretKeyRef:
+                name: rabbit-secret
+                key: RabbitMQ_URI
+          volumeMounts:
+          - name: configmap-volume
+            mountPath: "/app/appsettings.json"
+            subPath: appsettings.json
+            readOnly: true
+      volumes:
+      - name: configmap-volume
+        configMap:
+          name: api-configmap

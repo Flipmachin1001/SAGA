@@ -1,0 +1,60 @@
+#Заказы
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  type: {{ .Values.order.service.type }}
+  ports:
+     - name: http
+       port: {{ .Values.order.service.port }}
+       protocol: TCP
+       targetPort: {{ .Values.order.service.targetPort }}
+  selector:
+    app: order
+---
+#Оплата
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-service
+spec:
+  type: {{ .Values.billing.service.type }}
+  ports:
+     - name: http
+       port: {{ .Values.billing.service.port }}
+       protocol: TCP
+       targetPort: {{ .Values.billing.service.targetPort }}
+  selector:
+    app: billing
+---
+#СКЛАД
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-service
+spec:
+  type: {{ .Values.stock.service.type }}
+  ports:
+     - name: http
+       port: {{ .Values.stock.service.port }}
+       protocol: TCP
+       targetPort: {{ .Values.stock.service.targetPort }}
+  selector:
+    app: stock
+---
+#Доставка
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery-service
+spec:
+  type: {{ .Values.delivery.service.type }}
+  ports:
+     - name: http
+       port: {{ .Values.delivery.service.port }}
+       protocol: TCP
+       targetPort: {{ .Values.delivery.service.targetPort }}
+  selector:
+    app: delivery
+---
