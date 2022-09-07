@@ -1,0 +1,18 @@
+apiVersion: v2
+name: saga
+description: Home work OTUS SAGA
+
+type: application
+
+version: 0.1.0
+appVersion: v1
+
+dependencies:
+  - name: postgresql
+    version: 8.x.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: rabbitmq
+    version: 6.x.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: rabbitmq.enabled
