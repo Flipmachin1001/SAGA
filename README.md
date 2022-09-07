@@ -32,6 +32,10 @@ helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.git
 ```
 2. Скопировать репозиторий командой Git
 ```
-
+git clone https://github.com/Flipmachin1001/SAGA.git
 ```
-
+3. Перейти в созданный каталог
+```
+cd SAGA
+```
+4.
