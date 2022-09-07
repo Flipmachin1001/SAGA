@@ -48,7 +48,7 @@ kubectl get pod/saga-rabbitmq-0
 ```
 6. Запустить тесты Postman командой:
 ```
-newman run SAGA.postman_collection.json
+newman run SAGA.postman_collection.json --delay-request 500
 ```
 7. Удалить сервисы через Helm:
 ```
