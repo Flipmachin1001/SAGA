@@ -42,11 +42,15 @@ cd SAGA
 ```
 helm install saga ./helm-chart
 ```
-5. Запустить тесты Postman командой:
+5. Дождаться пока установиться RabbitMQ. Для проверки готовности выполнить команду:
+```
+kubectl get pod/saga-rabbitmq-0
+```
+6. Запустить тесты Postman командой:
 ```
 newman run SAGA.postman_collection.json
 ```
-6. Удалить сервисы через Helm:
+7. Удалить сервисы через Helm:
 ```
 helm uninstall saga ./helm-chart
 ```
