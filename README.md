@@ -52,5 +52,5 @@ newman run SAGA.postman_collection.json --delay-request 500
 ```
 7. Удалить сервисы через Helm:
 ```
-helm uninstall saga ./helm-chart
+helm uninstall saga
 ```
