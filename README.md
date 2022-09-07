@@ -38,4 +38,15 @@ git clone https://github.com/Flipmachin1001/SAGA.git
 ```
 cd SAGA
 ```
-4.
+4. Установить сервисы через Helm:
+```
+helm install saga ./helm-chart
+```
+5. Запустить тесты Postman командой:
+```
+newman run SAGA.postman_collection.json
+```
+6. Удалить сервисы через Helm:
+```
+helm uninstall saga ./helm-chart
+```
